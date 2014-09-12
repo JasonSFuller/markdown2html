@@ -1,0 +1,24 @@
+#!/bin/bash
+
+header="./header.html"
+footer="./footer.html"
+if [[ ! -f "$header" ]]; then
+  echo "ERROR: header file not found ($header)" 1>&2
+  exit 1
+fi
+
+if [[ ! -f "$footer" ]]; then
+  echo "ERROR: footer file not found ($footer)" 1>&2
+  exit 1
+fi
+
+if [[ -f "$1" ]]; then
+  cat "$header"
+  echo "<!-- Generated: $(date) -->"
+  echo "<!-- Source:    $1 -->"
+  markdown "$1"
+  cat "$footer"
+else
+  echo "ERROR: file not found ($1)" 1>&2
+  exit 1
+fi
