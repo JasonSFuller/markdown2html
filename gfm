@@ -674,6 +674,7 @@ function footer {
 if [[ "$1" =~ ^https?:// ]]; then
   if wget -S --spider "$1" 2>&1 | grep -qE 'HTTP.* 200 OK'; then
     markdown=$(mktemp)
+    tempfile=$markdown
     wget -q -O "$markdown" "$1"
   else
     echo "ERROR: URL not found."
@@ -689,6 +690,7 @@ if [[ ! -z "$markdown" && -s "$markdown" ]]; then
   header 
   wget -q -O - --header='Content-Type: text/plain' --post-file="$markdown" https://api.github.com/markdown/raw
   footer
+  if [[ ! -z "$tempfile" ]]; then rm -f "$tempfile"; fi
 else
   echo "ERROR: File not found."
   exit
