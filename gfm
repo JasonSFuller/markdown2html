@@ -671,8 +671,8 @@ function footer {
 
 # If it looks like a URL, try to go and get the file.
 # Otherwise, treat it like a local file.
-if [[ "$1" =~ "^https?://" ]]; then
-  if wget -S --spider "$1" | grep -qE 'HTTP.* 200 OK'; then
+if [[ "$1" =~ ^https?:// ]]; then
+  if wget -S --spider "$1" 2>&1 | grep -qE 'HTTP.* 200 OK'; then
     markdown=$(mktemp)
     wget -q -O "$markdown" "$1"
   else
